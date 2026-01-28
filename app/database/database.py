@@ -9,5 +9,5 @@ engine = create_async_engine(settings.ASYNC_DATABASE_URL)
 async_sessionmaker = async_sessionmaker(engine, class_=AsyncSession)
 
 async def get_session():
-    async with async_sessionmaker() as db:
-        yield db
+    async with async_sessionmaker() as session:
+        yield session

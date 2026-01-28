@@ -13,7 +13,7 @@ sys.path.append(os.path.join(sys.path[0], 'app'))
 
 from app.core.config import settings
 from app.database.base import Base
-from app.models.models import User
+from app.models.models import Users
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

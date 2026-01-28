@@ -3,7 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.base import Base
 
-class User(Base):
+class Users(Base):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True)
