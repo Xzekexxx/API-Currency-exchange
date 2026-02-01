@@ -8,3 +8,8 @@ class User(BaseModel):
 class UserLogin(BaseModel):
     username: str
     password: str
+
+class Converter(BaseModel):
+    amount: int
+    from_currency: int
+    to_currency: int 
