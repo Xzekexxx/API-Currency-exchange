@@ -1,16 +1,15 @@
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.security import OAuth2PasswordRequestForm
-from app.database.database import get_session
+from fastapi import APIRouter, Depends
+
+
 from app.schemas.currency import Converter
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.models import Users
-from app.core.config import settings
+from app.schemas.users import User
 from app.utils.currency_data import get_currency_list, get_actual_rates_data, convert_currency
+from app.security.security import get_current_user
 
 router_currency = APIRouter(prefix="/currency", tags=['Currency'])
 
 @router_currency.get("/list")
-async def get_currency():
+async def get_currency(current_user: User = Depends(get_current_user)):
     currency_list = get_currency_list()
 
     return {
@@ -19,7 +18,7 @@ async def get_currency():
     }
 
 @router_currency.get("/actual_rates")
-async def get_actual_rates():
+async def get_actual_rates(current_user: User = Depends(get_current_user)):
     curruncy_live = get_actual_rates_data()
     return {
         "message": "Available currencies for conversion",
@@ -27,7 +26,7 @@ async def get_actual_rates():
     }
 
 @router_currency.post("/converter")
-async def currency_converter(data: Converter):
+async def currency_converter(data: Converter, current_user: User = Depends(get_current_user)):
     convert = convert_currency(data.to_currency, data.from_currency, data.amount)
 
     return {

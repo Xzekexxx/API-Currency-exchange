@@ -1,15 +1,9 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, Field
 
 class User(BaseModel):
-    username: str
+    username: str = Field(min_length=5, max_length=12)
     email: EmailStr
     password: str
 
-class UserLogin(BaseModel):
-    username: str
-    password: str
-
-class Converter(BaseModel):
-    amount: int
-    from_currency: int
-    to_currency: int 
+    class Config:
+        from_attributes = True

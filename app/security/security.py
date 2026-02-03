@@ -4,17 +4,17 @@ import bcrypt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from typing import Dict
-from app.schemas.users import User, UserLogin
+from app.schemas.users import User
 from app.database.database import get_session
 from app.models.models import Users
 from app.core.config import settings
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from app.errors.auth import UserNotFoundExeption
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
 
-def create_jwt_token(data:Dict):
+def create_jwt_token(data: Dict):
     to_encode = data.copy()
     expire = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     to_encode.update({"exp": expire})
@@ -32,10 +32,9 @@ def get_user_from_token(token: str = Depends(oauth2_scheme)):
 async def get_current_user(username: str = Depends(get_user_from_token), db: AsyncSession = Depends(get_session)):
     current_user = (await db.execute(select(Users).where(username == Users.username))).scalar_one_or_none()
     if current_user:
-        print(User.model_validate(current_user))
         return User.model_validate(current_user)
 
-    raise HTTPException(detail="User not found")
+    raise UserNotFoundExeption(detail="User not found")
 
 def hash_password(password: str):
     salt = bcrypt.gensalt()
