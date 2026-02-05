@@ -1,6 +1,7 @@
 from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+
 from app.errors.base import CustomExeption
 from app.schemas.errors import CustomExeptionModel
 

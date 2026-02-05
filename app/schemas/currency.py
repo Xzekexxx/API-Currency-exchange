@@ -29,12 +29,12 @@ class Converter(BaseModel):
     @classmethod
     def validate_first_currency(cls, currency: str):
         if currency not in currency_list:
-            raise ValueError("Неверная валюта")
+            raise ValueError("Incorrect currency")
         return currency
     
     @field_validator("to_currency")
     @classmethod
     def validate_second_currency(cls, currency: str):
         if currency not in currency_list:
-            raise ValueError("Неверная валюта")
+            raise ValueError("Incorrect currency")
         return currency

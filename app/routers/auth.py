@@ -18,7 +18,7 @@ async def register_user(user_data: User, db: AsyncSession = Depends(get_session)
     get_user_from_db = await db.execute(select(Users).where(Users.username==user_data.username))
     user = get_user_from_db.scalar_one_or_none()
     if user:
-        raise UserAlreadyExistsException(detail="Такой пользователь уже сущетсвует")
+        raise UserAlreadyExistsException(detail="user already exists")
     
     hashed_password = hash_password(user_data.password)
 
@@ -32,7 +32,7 @@ async def register_user(user_data: User, db: AsyncSession = Depends(get_session)
     await db.commit()
     await db.refresh(create_new_user)
 
-    return {'message': 'Вы успешно зарегестрированы'}
+    return {'message': 'You have registered successfully'}
 
 @router_auth.post("/login")
 async def login_user(user_in : OAuth2PasswordRequestForm = Depends(), db: AsyncSession = Depends(get_session)):
@@ -46,10 +46,10 @@ async def login_user(user_in : OAuth2PasswordRequestForm = Depends(), db: AsyncS
             return {"access_token": token, 
                     "token_type": "bearer"}
         else:
-            raise UserNotFoundExeption(detail="Пользователь не был найден")
+            raise UserNotFoundExeption(detail="User was not found")
 
     except:
-        raise InvalidCredentialsException(detail="Не верные данные")
+        raise InvalidCredentialsException(detail="Incorrect data")
 
 @router_user.get("/about_user")
 async def about_user(current_user: User = Depends(get_current_user)):

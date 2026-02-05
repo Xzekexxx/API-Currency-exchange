@@ -4,12 +4,13 @@ import bcrypt
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from typing import Dict
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.schemas.users import User
 from app.database.database import get_session
 from app.models.models import Users
 from app.core.config import settings
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 from app.errors.auth import UserNotFoundExeption
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
@@ -25,9 +26,9 @@ def get_user_from_token(token: str = Depends(oauth2_scheme)):
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload.get("sub")
     except jwt.ExpiredSignatureError:
-        return {"error": "истек срок токена"}
+        return {"error": "token has expired"}
     except jwt.InvalidTokenError:
-        return {"error": "неверный токен"}
+        return {"error": "invalid token"}
 
 async def get_current_user(username: str = Depends(get_user_from_token), db: AsyncSession = Depends(get_session)):
     current_user = (await db.execute(select(Users).where(username == Users.username))).scalar_one_or_none()

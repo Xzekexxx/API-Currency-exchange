@@ -1,5 +1,6 @@
 # Python
 __pycache__/
+pytest_cache/
 *.py[cod]
 *$py.class
 *.so
@@ -76,7 +77,3 @@ htmlcov/
 # Temp files
 *.tmp
 *.temp
-
-# Ваши директории (если нужно игнорировать что-то внутри них)
-# app/__pycache__/
-# api/__pycache__/
