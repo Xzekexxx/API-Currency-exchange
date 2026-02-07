@@ -16,7 +16,7 @@ def get_currency_list():
         response = requests.request("GET", url_list, headers=headers)
         return response.json()
     except:
-        raise ApiError(detail="ошибка внешнего апи")
+        raise ApiError(detail="external api error")
 
 def get_actual_rates_data():
     try:
@@ -24,7 +24,7 @@ def get_actual_rates_data():
 
         return response.json()
     except:
-        raise ApiError(detail="ошибка внешнего апи")
+        raise ApiError(detail="external api error")
     
 def convert_currency(first, second, amount):
     try:
@@ -32,4 +32,4 @@ def convert_currency(first, second, amount):
 
         return response.json()
     except:
-        raise ApiError(detail="ошибка внешнего апи")
+        raise ApiError(detail="external api error")
