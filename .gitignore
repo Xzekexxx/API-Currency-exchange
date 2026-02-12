@@ -22,7 +22,7 @@ wheels/
 *.egg
 MANIFEST
 
-# Virtual environments (УЖЕ ЕСТЬ В ПРОЕКТЕ)
+# Virtual environments
 venv/
 env/
 .venv/
@@ -77,3 +77,6 @@ htmlcov/
 # Temp files
 *.tmp
 *.temp
+
+# PostgreSQL
+postgres_data/
