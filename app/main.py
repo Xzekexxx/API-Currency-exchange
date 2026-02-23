@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.handlers.exceptions import app_exeption_handler, validator_exceptionhandler
 from app.errors.base import CustomExeption
@@ -14,3 +15,10 @@ app.include_router(router_currency)
 
 app.add_exception_handler(CustomExeption, app_exeption_handler)
 app.add_exception_handler(RequestValidationError, validator_exceptionhandler)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origin=["*"],
+    allow_methods=['*'],
+    allow_headers=['*']
+)
