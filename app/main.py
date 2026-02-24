@@ -18,7 +18,7 @@ app.add_exception_handler(RequestValidationError, validator_exceptionhandler)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origin=["*"],
+    allow_origins=['*'],
     allow_methods=['*'],
     allow_headers=['*']
 )

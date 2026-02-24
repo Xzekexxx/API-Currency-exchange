@@ -1,7 +1,7 @@
 import jwt
 import datetime 
 import bcrypt
-from fastapi import Depends, HTTPException
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from typing import Dict
 from sqlalchemy import select
@@ -10,10 +10,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.schemas.users import User
 from app.database.database import get_session
 from app.models.models import Users
-from app.core.config import settings
+from app.core.config import get_settings
 from app.errors.auth import UserNotFoundExeption
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='login')
+
+settings = get_settings()
 
 def create_jwt_token(data: Dict):
     to_encode = data.copy()

@@ -1,7 +1,9 @@
 import requests
 
-from app.core.config import settings
+from app.core.config import get_settings
 from app.errors.currency import ApiError
+
+settings = get_settings()
 
 url_list = "https://api.apilayer.com/currency_data/list"
 url_live = "https://api.apilayer.com/currency_data/live?source=USD&currencies="

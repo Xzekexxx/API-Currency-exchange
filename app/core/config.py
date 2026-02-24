@@ -1,15 +1,15 @@
 from dotenv import find_dotenv
+from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
-import os
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict()
+    model_config = SettingsConfigDict(_env_file=find_dotenv())
 
-    DB_HOST: str = "localhost"
-    DB_PORT: str = "5432"
-    DB_USER: str = "postgres"
-    DB_PASS: str = "mypassword"
-    DB_NAME: str = "my_db"
+    DB_HOST: str 
+    DB_PORT: str 
+    DB_USER: str 
+    DB_PASS: str 
+    DB_NAME: str
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
@@ -20,7 +20,6 @@ class Settings(BaseSettings):
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
     
 
-if os.path.exists('/.dockerenv'):
-    settings = Settings()
-else:
-    settings = Settings(_env_file=find_dotenv())
+@lru_cache
+def get_settings():
+    return Settings()
